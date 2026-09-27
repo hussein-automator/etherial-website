@@ -60,7 +60,7 @@ export function HeroSlideshow() {
       <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 bg-ink-deep/70 px-5 pb-5 pt-8 text-linen sm:px-7">
         <div className="min-w-0">
           <p className="text-[10px] font-medium uppercase tracking-[0.15em] text-linen/75">Concept imagery · not client work</p>
-          <p className="font-display mt-1 text-2xl">{slides[active].label}</p>
+          <p className="font-display mt-1 text-2xl">{slides[active]?.label ?? "Interior concept"}</p>
           <div className="mt-3 flex gap-2" aria-label="Choose slide">
             {slides.map((slide, index) => (
               <Button key={slide.label} type="button" variant="ghost" size="icon" onClick={() => go(index)} aria-label={`Show ${slide.label}`} aria-current={index === active ? "true" : undefined} className="h-6 w-6 rounded-full p-1 hover:bg-linen/20">
