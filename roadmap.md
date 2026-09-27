@@ -8,3 +8,5 @@
 - [ ] Contact page: multi-step quote form (localStorage, n8n webhook POST), 3-step roadmap, Maps placeholder
 - [ ] Placeholders: Google review URL, Maps embed, testimonials, imagery — all labeled
 - [ ] Verify build, head metadata on all routes
+- [ ] Hero slideshow with concept imagery and curved frame fold hover treatments
+- [ ] Footer portfolio/company/legal links and matching Pantry, FAQ, privacy, and terms pages
