@@ -52,6 +52,7 @@ export const Route = createFileRoute("/portfolio/$category")({
 function CategoryPage() {
   const { category } = Route.useParams();
   const cat = CATEGORIES[category];
+  if (!cat) return null;
 
   return (
     <div className="mx-auto max-w-6xl px-5 py-20">
