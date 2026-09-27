@@ -122,30 +122,39 @@ export function SiteFooter() {
 
   return (
     <footer className="bg-ink-deep text-linen">
-      <div className="mx-auto grid max-w-6xl gap-12 px-5 py-16 md:grid-cols-3">
+      <div className="mx-auto grid max-w-6xl gap-10 px-5 py-16 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1.3fr]">
         <div>
           <Wordmark className="text-linen" />
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-linen/70">
             Bespoke fitted closets, kitchens and living spaces — designed and built in Dubai.
           </p>
+          <div className="mt-5 text-sm leading-relaxed text-linen/70">
+            <p>{CONTACT.address}</p>
+            <p className="mt-1">{CONTACT.hours}</p>
+            <p className="mt-3"><a href={`tel:${CONTACT.phone.replace(/\s/g, "")}`} className="u-reveal">{CONTACT.phone}</a></p>
+            <p><a href={`mailto:${CONTACT.email}`} className="u-reveal">{CONTACT.email}</a></p>
+          </div>
         </div>
-        <div className="text-sm leading-relaxed text-linen/70">
+        <nav aria-label="Footer portfolio" className="text-sm leading-relaxed text-linen/70">
           <p className="mb-3 text-[13px] font-medium uppercase tracking-[0.14em] text-linen">
-            Visit us
+            Portfolio
           </p>
-          <p>{CONTACT.address}</p>
-          <p className="mt-1">{CONTACT.hours}</p>
-          <p className="mt-3">
-            <a href={`tel:${CONTACT.phone.replace(/\s/g, "")}`} className="u-reveal">
-              {CONTACT.phone}
-            </a>
-          </p>
-          <p>
-            <a href={`mailto:${CONTACT.email}`} className="u-reveal">
-              {CONTACT.email}
-            </a>
-          </p>
-        </div>
+          <ul className="space-y-2">
+            <li><Link className="u-reveal" to="/portfolio/$category" params={{ category: "closets" }}>Fitted Closets</Link></li>
+            <li><Link className="u-reveal" to="/portfolio/$category" params={{ category: "pantry" }}>Pantry</Link></li>
+            <li><Link className="u-reveal" to="/portfolio/$category" params={{ category: "kitchens" }}>Bespoke Kitchen</Link></li>
+            <li><Link className="u-reveal" to="/portfolio">All Projects</Link></li>
+          </ul>
+        </nav>
+        <nav aria-label="Footer company" className="text-sm leading-relaxed text-linen/70">
+          <p className="mb-3 text-[13px] font-medium uppercase tracking-[0.14em] text-linen">Company</p>
+          <ul className="space-y-2">
+            <li><Link className="u-reveal" to="/about">About</Link></li>
+            <li><Link className="u-reveal" to="/blog">Blog</Link></li>
+            <li><Link className="u-reveal" to="/contact">Contact</Link></li>
+            <li><Link className="u-reveal" to="/faqs">FAQs</Link></li>
+          </ul>
+        </nav>
         <div>
           <p className="mb-3 text-[13px] font-medium uppercase tracking-[0.14em]">
             Occasional notes on joinery
@@ -168,8 +177,14 @@ export function SiteFooter() {
           </form>
         </div>
       </div>
-      <div className="border-t border-linen/10 py-5 text-center text-xs text-linen/50">
-        © {new Date().getFullYear()} Etherial Interiors, Dubai. All rights reserved.
+      <div className="border-t border-linen/10 px-5 py-5 text-xs text-linen/50">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4">
+          <span>© {new Date().getFullYear()} Etherial Interiors, Dubai. All rights reserved.</span>
+          <nav aria-label="Legal" className="flex flex-wrap gap-x-5 gap-y-2">
+            <Link className="u-reveal" to="/privacy-policy">Privacy Policy</Link>
+            <Link className="u-reveal" to="/terms-and-conditions">T&amp;Cs</Link>
+          </nav>
+        </div>
       </div>
     </footer>
   );
@@ -187,7 +202,7 @@ export function ImagePlaceholder({
 }) {
   return (
     <div
-      className={`flex items-center justify-center border border-dashed border-rule bg-linen ${
+      className={`frame-fold flex items-center justify-center border border-dashed border-rule bg-linen ${
         tall ? "aspect-[3/4]" : "aspect-[4/3]"
       } rounded-[48px_6px_48px_6px] ${className}`}
     >

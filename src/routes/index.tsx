@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
+import { HeroSlideshow } from "@/components/hero-slideshow";
 import {
   SectionHeading,
   ImagePlaceholder,
@@ -97,11 +98,7 @@ function HomePage() {
             </div>
           </div>
         </div>
-        <ImagePlaceholder
-          label="Hero photograph — signature fitted closet installation (client to supply)"
-          tall
-          className="rounded-[120px_6px_120px_6px]"
-        />
+        <HeroSlideshow />
       </section>
 
       {/* Why Etherial */}
@@ -153,7 +150,7 @@ function HomePage() {
               </div>
             </Link>
           ))}
-          <div className="flex items-center justify-center rounded-[48px_6px_48px_6px] border border-rule bg-linen-alt p-10 text-center">
+          <div className="frame-fold flex items-center justify-center rounded-[48px_6px_48px_6px] border border-rule bg-linen-alt p-10 text-center">
             <div>
               <p className="font-display text-2xl text-ink">Have a space in mind?</p>
               <div className="mt-4">
@@ -222,7 +219,7 @@ function HomePage() {
             {TESTIMONIALS.map((t, i) => (
               <figure
                 key={i}
-                className="rounded-[48px_6px_48px_6px] border border-rule bg-linen-alt p-8"
+                className="frame-fold rounded-[48px_6px_48px_6px] border border-rule bg-linen-alt p-8"
               >
                 <Stars />
                 <blockquote className="mt-4 text-[15px] leading-relaxed text-ink">

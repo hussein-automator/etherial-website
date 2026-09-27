@@ -119,7 +119,7 @@ function ContactPage() {
         </p>
 
         {submitted ? (
-          <div className="mt-10 rounded-[48px_6px_48px_6px] border border-rule bg-linen p-10 text-center">
+          <div className="frame-fold mt-10 rounded-[48px_6px_48px_6px] border border-rule bg-linen p-10 text-center">
             <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-brass text-linen-alt">
               <Check className="h-6 w-6" />
             </span>
@@ -272,7 +272,7 @@ function ContactPage() {
 
       {/* Sidebar: process roadmap + visit info */}
       <aside className="space-y-10">
-        <div className="rounded-[48px_6px_48px_6px] border border-rule bg-linen p-8">
+        <div className="frame-fold rounded-[48px_6px_48px_6px] border border-rule bg-linen p-8">
           <h2 className="font-display text-2xl text-ink">What happens next</h2>
           <ol className="mt-6 space-y-6">
             {[
@@ -293,7 +293,7 @@ function ContactPage() {
           </ol>
         </div>
 
-        <div className="rounded-[48px_6px_48px_6px] border border-rule bg-linen-alt p-8">
+        <div className="frame-fold rounded-[48px_6px_48px_6px] border border-rule bg-linen-alt p-8">
           <h2 className="font-display text-2xl text-ink">Visit the workshop</h2>
           <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
             {CONTACT.address}

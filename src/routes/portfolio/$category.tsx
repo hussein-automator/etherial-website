@@ -12,6 +12,10 @@ const CATEGORIES: Record<string, { name: string; intro: string }> = {
     intro:
       "Made-to-measure kitchens and pantries — cabinetry, worktops and storage built for real daily cooking.",
   },
+  pantry: {
+    name: "Pantry",
+    intro: "Made-to-measure pantry storage planned around your kitchen and the way you use it.",
+  },
   living: {
     name: "Living Spaces",
     intro:
