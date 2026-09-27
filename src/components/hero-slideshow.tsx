@@ -35,7 +35,7 @@ export function HeroSlideshow() {
 
   return (
     <div
-      className="frame-fold relative aspect-[3/4] min-h-0 w-full overflow-hidden rounded-[120px_6px_120px_6px] bg-linen"
+      className="frame-fold frame-fold-large relative aspect-[3/4] min-h-0 w-full overflow-hidden rounded-[120px_6px_120px_6px] bg-linen"
       aria-roledescription="carousel"
       aria-label="Interior design concepts"
       onMouseEnter={() => setHovered(true)}

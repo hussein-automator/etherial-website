@@ -155,8 +155,7 @@
 .frame-fold:hover {
   border-radius: 6px 48px 6px 48px;
 }
-.frame-fold:has(> img):hover,
-.frame-fold.aspect-\[3\/4\]:hover {
+.frame-fold-large:hover {
   border-radius: 6px 120px 6px 120px;
 }
 @media (prefers-reduced-motion: reduce) {

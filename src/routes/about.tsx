@@ -48,7 +48,7 @@ function AboutPage() {
         <ImagePlaceholder
           label="Workshop or team photograph (client to supply)"
           tall
-          className="rounded-[120px_6px_120px_6px]"
+          className="frame-fold-large rounded-[120px_6px_120px_6px]"
         />
       </section>
 
