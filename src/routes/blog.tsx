@@ -1,5 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import { SectionHeading, ImagePlaceholder, ArrowLink } from "@/components/etherial";
+import { fetchPosts } from "@/lib/wix";
 
 export const Route = createFileRoute("/blog")({
   head: () => ({
@@ -42,16 +45,25 @@ const POSTS = [
 ];
 
 function BlogPage() {
+  const [ready, setReady] = useState(false);
+  useEffect(() => setReady(true), []);
+  const { data: live = [] } = useQuery({ queryKey: ["wix-posts"], queryFn: fetchPosts, enabled: ready, retry: false });
+  const posts = live.length
+    ? live.map((p) => ({ key: p.id, title: p.title, excerpt: p.excerpt ?? "", date: p.date ?? "", cover: p.cover }))
+    : POSTS.map((p) => ({ key: p.title, ...p, cover: undefined as string | undefined }));
   return (
     <div className="mx-auto max-w-6xl px-5 py-20">
       <SectionHeading as="h1" eyebrow="Journal" title="Notes from the workshop">
-        Occasional writing on joinery, materials and making the most of Dubai homes. Articles are
-        on their way — the cards below are placeholders.
+        Occasional writing on joinery, materials and making the most of Dubai homes. 
       </SectionHeading>
       <div className="mt-14 grid gap-8 md:grid-cols-3">
-        {POSTS.map((post) => (
-          <article key={post.title} className="flex flex-col">
-            <ImagePlaceholder label="Article cover image (client to supply)" />
+        {posts.map((post) => (
+          <article key={post.key} className="flex flex-col">
+            {post.cover ? (
+              <img src={post.cover} alt={post.title} loading="lazy" className="frame-fold aspect-[4/3] w-full rounded-[48px_6px_48px_6px] object-cover" />
+            ) : (
+              <ImagePlaceholder label="Article cover image (client to supply)" />
+            )}
             <p className="mt-4 text-[12px] uppercase tracking-[0.14em] text-muted-foreground">
               {post.date}
             </p>

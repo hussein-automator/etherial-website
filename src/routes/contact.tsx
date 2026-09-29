@@ -3,6 +3,9 @@ import { useState, type FormEvent } from "react";
 import { ArrowLeft, ArrowRight, Check } from "lucide-react";
 import { toast } from "sonner";
 import { CONTACT } from "@/components/etherial";
+import { BookConsultation } from "@/components/book-consultation";
+import { submitWixForm } from "@/lib/wix";
+import { WIX_QUOTE_FORM_ID } from "@/lib/wix-config";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -93,6 +96,18 @@ function ContactPage() {
       } catch {
         // Webhook unreachable — draft stays in localStorage; still confirm to the user.
       }
+    }
+    try {
+      await submitWixForm(WIX_QUOTE_FORM_ID, {
+        first_name: data.name,
+        email: data.email,
+        phone: data.phone,
+        project_type: data.projectType,
+        budget: data.budget,
+        project_details: data.details,
+      });
+    } catch {
+      toast.error("Your request is saved, but we couldn't reach our inbox. We'll follow up by phone.");
     }
     localStorage.setItem("etherialLastQuote", JSON.stringify(payload));
     localStorage.removeItem("etherialQuoteDraft");
@@ -275,6 +290,7 @@ function ContactPage() {
 
       {/* Sidebar: process roadmap + visit info */}
       <aside className="space-y-10">
+        <BookConsultation />
         <div className="frame-fold rounded-[48px_6px_48px_6px] border border-rule bg-linen p-8">
           <h2 className="font-display text-2xl text-ink">What happens next</h2>
           <ol className="mt-6 space-y-6">
