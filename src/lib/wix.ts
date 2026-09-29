@@ -101,11 +101,12 @@ export async function fetchServices(): Promise<WixService[]> {
   }));
 }
 
-export async function startBooking(serviceId: string) {
+// Opens Wix's hosted booking flow (service list, calendar, checkout).
+export async function startBooking() {
   const c = await wix();
   const origin = window.location.origin;
   const { redirectSession } = await (c.redirects as any).createRedirectSession({
-    bookingsBook: { serviceId },
+    bookingsBook: {},
     callbacks: { postFlowUrl: `${origin}/booking-complete`, thankYouPageUrl: `${origin}/booking-complete` },
   });
   if (redirectSession?.fullUrl) window.location.href = redirectSession.fullUrl;

@@ -2,6 +2,8 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { useState, type FormEvent, type ReactNode } from "react";
 import { Menu, X, Star, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
+import { submitWixForm } from "@/lib/wix";
+import { WIX_NEWSLETTER_FORM_ID } from "@/lib/wix-config";
 
 export const CONTACT = {
   phone: "+971 56 201 5550",
@@ -116,6 +118,9 @@ export function SiteFooter() {
         body: JSON.stringify({ type: "newsletter", email }),
       }).catch(() => {});
     }
+    submitWixForm(WIX_NEWSLETTER_FORM_ID, { email, marketing_consent: true }).catch(() => {
+      toast.error("We saved your email, but couldn't reach our mailing list. We'll add you shortly.");
+    });
     setEmail("");
     toast.success("Thank you — you've been added to our list.");
   }
