@@ -215,11 +215,13 @@ function ContactPage() {
                     value={data.name}
                     onChange={(e) => update({ name: e.target.value })}
                     placeholder="Full name"
+                    aria-label="Full name"
                     required
                     className={inputCls}
                   />
                   <input
                     type="email"
+                    aria-label="Email address"
                     value={data.email}
                     onChange={(e) => update({ email: e.target.value })}
                     placeholder="Email address"
@@ -228,6 +230,7 @@ function ContactPage() {
                   />
                   <input
                     type="tel"
+                    aria-label="Phone number"
                     value={data.phone}
                     onChange={(e) => update({ phone: e.target.value })}
                     placeholder="Phone (WhatsApp preferred)"

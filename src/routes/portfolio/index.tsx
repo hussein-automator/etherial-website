@@ -54,7 +54,7 @@ const CATEGORIES = [
 function PortfolioPage() {
   return (
     <div className="mx-auto max-w-6xl px-5 py-20">
-      <SectionHeading eyebrow="Portfolio" title="Work we're proud to sign">
+      <SectionHeading as="h1" eyebrow="Portfolio" title="Work we're proud to sign">
         Every project below was designed, built and installed by our own team in Dubai. Full
         photography is being added — each frame is a labeled placeholder for real project images.
       </SectionHeading>
