@@ -10,3 +10,5 @@
 - [ ] Verify build, head metadata on all routes
 - [ ] Hero slideshow with concept imagery and curved frame fold hover treatments
 - [ ] Footer portfolio/company/legal links and matching Pantry, FAQ, privacy, and terms pages
+- [x] Wix Headless: quote/newsletter forms, Projects/JournalPosts CMS, Bookings redirect
+- [ ] Wix form IDs + CMS collections + OAuth allowed URLs (blocked: client setup in Wix)

@@ -1,5 +1,8 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import { ImagePlaceholder, ArrowLink } from "@/components/etherial";
+import { fetchProjects } from "@/lib/wix";
 
 const CATEGORIES: Record<string, { name: string; intro: string }> = {
   closets: {
@@ -56,6 +59,14 @@ export const Route = createFileRoute("/portfolio/$category")({
 function CategoryPage() {
   const { category } = Route.useParams();
   const cat = CATEGORIES[category];
+  const [ready, setReady] = useState(false);
+  useEffect(() => setReady(true), []);
+  const { data: projects = [] } = useQuery({
+    queryKey: ["wix-projects", category],
+    queryFn: () => fetchProjects(category),
+    enabled: ready && !!cat,
+    retry: false,
+  });
   if (!cat) return null;
 
   return (
@@ -68,7 +79,23 @@ function CategoryPage() {
         {cat.intro}
       </p>
       <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {Array.from({ length: 6 }).map((_, i) => (
+        {projects.map((p, i) => (
+          <figure key={p.id} className="frame-fold overflow-hidden rounded-[48px_6px_48px_6px] bg-linen">
+            {p.image && (
+              <img
+                src={p.image}
+                alt={p.title}
+                loading="lazy"
+                className={`w-full object-cover ${i % 2 === 0 ? "aspect-[4/5]" : "aspect-[4/3]"}`}
+              />
+            )}
+            <figcaption className="p-4">
+              <p className="text-sm font-semibold text-ink">{p.title}</p>
+              {p.description && <p className="mt-1 text-sm text-muted-foreground">{p.description}</p>}
+            </figcaption>
+          </figure>
+        ))}
+        {projects.length === 0 && Array.from({ length: 6 }).map((_, i) => (
           <ImagePlaceholder
             key={i}
             tall={i % 2 === 0}
