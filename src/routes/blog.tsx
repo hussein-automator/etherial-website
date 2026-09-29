@@ -44,7 +44,7 @@ const POSTS = [
 function BlogPage() {
   return (
     <div className="mx-auto max-w-6xl px-5 py-20">
-      <SectionHeading eyebrow="Journal" title="Notes from the workshop">
+      <SectionHeading as="h1" eyebrow="Journal" title="Notes from the workshop">
         Occasional writing on joinery, materials and making the most of Dubai homes. Articles are
         on their way — the cards below are placeholders.
       </SectionHeading>

@@ -162,6 +162,7 @@ export function SiteFooter() {
           <form onSubmit={subscribe} className="flex gap-2">
             <input
               type="email"
+              aria-label="Email address for newsletter"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -227,15 +228,17 @@ export function SectionHeading({
   eyebrow,
   title,
   children,
+  as: Tag = "h2",
 }: {
   eyebrow: string;
   title: string;
   children?: ReactNode;
+  as?: "h1" | "h2";
 }) {
   return (
     <div className="mx-auto max-w-2xl text-center">
       <p className="text-[12px] font-medium uppercase tracking-[0.22em] text-brass">{eyebrow}</p>
-      <h2 className="font-display mt-3 text-4xl leading-tight text-ink md:text-5xl">{title}</h2>
+      <Tag className="font-display mt-3 text-4xl leading-tight text-ink md:text-5xl">{title}</Tag>
       {children && <p className="mt-4 text-[15px] leading-relaxed text-muted-foreground">{children}</p>}
     </div>
   );
