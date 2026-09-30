@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { HeroSlideshow } from "@/components/hero-slideshow";
+import { SERVICE_SILOS, SILO_KEYS } from "@/lib/service-silos";
 import {
   SectionHeading,
   ImagePlaceholder,
@@ -30,13 +31,7 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
-const CATEGORIES = [
-  { slug: "closets", name: "Fitted Closets" },
-  { slug: "kitchens", name: "Kitchens" },
-  { slug: "living", name: "Living Spaces" },
-  { slug: "wardrobes", name: "Wardrobes" },
-  { slug: "bespoke", name: "Bespoke Joinery" },
-];
+const CATEGORIES = SILO_KEYS.map((slug) => ({ slug, name: SERVICE_SILOS[slug].name }));
 
 const STATS = [
   { value: "500+", label: "Fit-outs completed" },
@@ -139,8 +134,8 @@ function HomePage() {
           {CATEGORIES.map((cat, i) => (
             <Link
               key={cat.slug}
-              to="/portfolio/$category"
-              params={{ category: cat.slug }}
+              to="/$section"
+              params={{ section: cat.slug }}
               className={`group block ${i === 0 ? "sm:col-span-2 lg:col-span-1 lg:-mt-6" : ""}`}
             >
               <ImagePlaceholder label={`${cat.name} — project photo (client to supply)`} />

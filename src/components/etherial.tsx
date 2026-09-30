@@ -4,6 +4,7 @@ import { Menu, X, Star, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 import { submitWixForm } from "@/lib/wix";
 import { WIX_NEWSLETTER_FORM_ID } from "@/lib/wix-config";
+import { SERVICE_SILOS, SILO_KEYS } from "@/lib/service-silos";
 
 export const CONTACT = {
   phone: "+971 56 201 5550",
@@ -14,13 +15,7 @@ export const CONTACT = {
   googleReviewUrl: "#google-review-url-placeholder",
 };
 
-const NAV = [
-  { to: "/", label: "Home" },
-  { to: "/portfolio", label: "Portfolio" },
-  { to: "/about", label: "About" },
-  { to: "/blog", label: "Blog" },
-  { to: "/contact", label: "Contact" },
-] as const;
+const NAV = SILO_KEYS.map((section) => ({ section, label: SERVICE_SILOS[section].name }));
 
 export function Wordmark({ className = "" }: { className?: string }) {
   return (
@@ -36,23 +31,24 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-rule bg-linen-alt/90 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
+      <div className="mx-auto flex min-h-16 max-w-7xl items-center justify-between gap-4 px-5">
         <Link to="/" aria-label="Etherial Interiors home">
           <Wordmark />
         </Link>
-        <nav className="hidden items-center gap-8 md:flex" aria-label="Primary">
+        <nav className="hidden flex-wrap items-center justify-center gap-x-5 gap-y-2 py-3 lg:flex" aria-label="Primary">
           {NAV.map((item) => (
             <Link
-              key={item.to}
-              to={item.to}
-              data-active={pathname === item.to}
-              className="u-reveal text-[13px] font-medium uppercase tracking-[0.14em] text-ink"
+              key={item.section}
+              to="/$section"
+              params={{ section: item.section }}
+              data-active={pathname.startsWith(`/${item.section}`)}
+              className="u-reveal text-[11px] font-medium uppercase tracking-[0.08em] text-ink"
             >
               {item.label}
             </Link>
           ))}
         </nav>
-        <div className="hidden md:block">
+        <div className="hidden lg:block">
           <Link
             to="/contact"
             className="btn-liquid inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-[13px] font-medium uppercase tracking-[0.12em] text-primary-foreground"
@@ -61,7 +57,7 @@ export function SiteHeader() {
           </Link>
         </div>
         <button
-          className="md:hidden"
+          className="lg:hidden"
           onClick={() => setOpen((v) => !v)}
           aria-label={open ? "Close menu" : "Open menu"}
         >
@@ -69,12 +65,13 @@ export function SiteHeader() {
         </button>
       </div>
       {open && (
-        <nav className="border-t border-rule bg-linen-alt px-5 py-4 md:hidden" aria-label="Mobile">
+        <nav className="border-t border-rule bg-linen-alt px-5 py-4 lg:hidden" aria-label="Mobile">
           <ul className="flex flex-col gap-4">
             {NAV.map((item) => (
-              <li key={item.to}>
+              <li key={item.section}>
                 <Link
-                  to={item.to}
+                  to="/$section"
+                  params={{ section: item.section }}
                   onClick={() => setOpen(false)}
                   className="text-sm font-medium uppercase tracking-[0.14em] text-ink"
                 >
@@ -145,9 +142,11 @@ export function SiteFooter() {
             Portfolio
           </p>
           <ul className="space-y-2">
-            <li><Link className="u-reveal" to="/portfolio/$category" params={{ category: "closets" }}>Fitted Closets</Link></li>
-            <li><Link className="u-reveal" to="/portfolio/$category" params={{ category: "pantry" }}>Pantry</Link></li>
-            <li><Link className="u-reveal" to="/portfolio/$category" params={{ category: "kitchens" }}>Bespoke Kitchen</Link></li>
+             <li><Link className="u-reveal" to="/$section" params={{ section: "custom-wardrobes-closets-dubai" }}>Wardrobes &amp; Closets</Link></li>
+             <li><Link className="u-reveal" to="/$section" params={{ section: "bespoke-joinery-dubai" }}>Bespoke Joinery</Link></li>
+             <li><Link className="u-reveal" to="/$section" params={{ section: "living-media-storage" }}>Living &amp; Media Storage</Link></li>
+             <li><Link className="u-reveal" to="/$section" params={{ section: "kitchen-laundry-renovations" }}>Kitchen &amp; Laundry</Link></li>
+             <li><Link className="u-reveal" to="/$section" params={{ section: "custom-cabinets-vanities" }}>Cabinets &amp; Vanities</Link></li>
             <li><Link className="u-reveal" to="/portfolio">All Projects</Link></li>
           </ul>
         </nav>

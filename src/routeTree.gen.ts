@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SectionRouteImport } from './routes/$section'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as BookingCompleteRouteImport } from './routes/booking-complete'
@@ -17,12 +18,18 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as FaqsRouteImport } from './routes/faqs'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as TermsAndConditionsRouteImport } from './routes/terms-and-conditions'
+import { Route as SectionServiceRouteImport } from './routes/$section.$service'
 import { Route as PortfolioIndexRouteImport } from './routes/portfolio/index'
 import { Route as PortfolioCategoryRouteImport } from './routes/portfolio/$category'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SectionRoute = SectionRouteImport.update({
+  id: '/$section',
+  path: '/$section',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -60,6 +67,11 @@ const TermsAndConditionsRoute = TermsAndConditionsRouteImport.update({
   path: '/terms-and-conditions',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SectionServiceRoute = SectionServiceRouteImport.update({
+  id: '/$service',
+  path: '/$service',
+  getParentRoute: () => SectionRoute,
+} as any)
 const PortfolioIndexRoute = PortfolioIndexRouteImport.update({
   id: '/portfolio/',
   path: '/portfolio/',
@@ -73,6 +85,7 @@ const PortfolioCategoryRoute = PortfolioCategoryRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/$section': typeof SectionRouteWithChildren
   '/about': typeof AboutRoute
   '/blog': typeof BlogRoute
   '/booking-complete': typeof BookingCompleteRoute
@@ -80,11 +93,13 @@ export interface FileRoutesByFullPath {
   '/faqs': typeof FaqsRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/terms-and-conditions': typeof TermsAndConditionsRoute
+  '/$section/$service': typeof SectionServiceRoute
   '/portfolio/$category': typeof PortfolioCategoryRoute
   '/portfolio/': typeof PortfolioIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/$section': typeof SectionRouteWithChildren
   '/about': typeof AboutRoute
   '/blog': typeof BlogRoute
   '/booking-complete': typeof BookingCompleteRoute
@@ -92,12 +107,14 @@ export interface FileRoutesByTo {
   '/faqs': typeof FaqsRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/terms-and-conditions': typeof TermsAndConditionsRoute
+  '/$section/$service': typeof SectionServiceRoute
   '/portfolio/$category': typeof PortfolioCategoryRoute
   '/portfolio': typeof PortfolioIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/$section': typeof SectionRouteWithChildren
   '/about': typeof AboutRoute
   '/blog': typeof BlogRoute
   '/booking-complete': typeof BookingCompleteRoute
@@ -105,6 +122,7 @@ export interface FileRoutesById {
   '/faqs': typeof FaqsRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/terms-and-conditions': typeof TermsAndConditionsRoute
+  '/$section/$service': typeof SectionServiceRoute
   '/portfolio/$category': typeof PortfolioCategoryRoute
   '/portfolio/': typeof PortfolioIndexRoute
 }
@@ -112,6 +130,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/$section'
     | '/about'
     | '/blog'
     | '/booking-complete'
@@ -119,11 +138,13 @@ export interface FileRouteTypes {
     | '/faqs'
     | '/privacy-policy'
     | '/terms-and-conditions'
+    | '/$section/$service'
     | '/portfolio/$category'
     | '/portfolio/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/$section'
     | '/about'
     | '/blog'
     | '/booking-complete'
@@ -131,11 +152,13 @@ export interface FileRouteTypes {
     | '/faqs'
     | '/privacy-policy'
     | '/terms-and-conditions'
+    | '/$section/$service'
     | '/portfolio/$category'
     | '/portfolio'
   id:
     | '__root__'
     | '/'
+    | '/$section'
     | '/about'
     | '/blog'
     | '/booking-complete'
@@ -143,12 +166,14 @@ export interface FileRouteTypes {
     | '/faqs'
     | '/privacy-policy'
     | '/terms-and-conditions'
+    | '/$section/$service'
     | '/portfolio/$category'
     | '/portfolio/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  SectionRoute: typeof SectionRouteWithChildren
   AboutRoute: typeof AboutRoute
   BlogRoute: typeof BlogRoute
   BookingCompleteRoute: typeof BookingCompleteRoute
@@ -167,6 +192,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/$section': {
+      id: '/$section'
+      path: '/$section'
+      fullPath: '/$section'
+      preLoaderRoute: typeof SectionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -218,6 +250,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsAndConditionsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/$section/$service': {
+      id: '/$section/$service'
+      path: '/$service'
+      fullPath: '/$section/$service'
+      preLoaderRoute: typeof SectionServiceRouteImport
+      parentRoute: typeof SectionRoute
+    }
     '/portfolio/': {
       id: '/portfolio/'
       path: '/portfolio'
@@ -235,8 +274,20 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface SectionRouteChildren {
+  SectionServiceRoute: typeof SectionServiceRoute
+}
+
+const SectionRouteChildren: SectionRouteChildren = {
+  SectionServiceRoute: SectionServiceRoute,
+}
+
+const SectionRouteWithChildren =
+  SectionRoute._addFileChildren(SectionRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  SectionRoute: SectionRouteWithChildren,
   AboutRoute: AboutRoute,
   BlogRoute: BlogRoute,
   BookingCompleteRoute: BookingCompleteRoute,

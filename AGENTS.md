@@ -10,5 +10,5 @@
 <!-- LOVABLE:END -->
 
 - Keep client photography placeholders distinct from generated hero concept images; the hero slideshow explicitly labels renderings so conceptual work cannot be mistaken for completed projects.
-- Keep the footer's portfolio categories on the existing dynamic portfolio route and legal/FAQ content on distinct static routes; this preserves navigable destinations without a backend.
+- Keep the five service silos in shared data, with parent/detail dynamic routes and permanent redirects from old portfolio categories; this preserves existing URLs while keeping each service hierarchy consistent.
 - Wix Headless (visitor OAuth, public client ID in src/lib/wix-config.ts) powers forms, CMS content and bookings from the browser only; keeps the site static with no secret in code.
