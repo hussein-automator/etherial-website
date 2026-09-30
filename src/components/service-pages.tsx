@@ -6,7 +6,7 @@ import { ImagePlaceholder } from "@/components/etherial";
 import { fetchProjects } from "@/lib/wix";
 import { SERVICE_SILOS, getService, type SiloSlug } from "@/lib/service-silos";
 
-function Breadcrumbs({ section, service }: { section: SiloSlug; service?: string }) {
+function Breadcrumbs({ section, service }: { section: SiloSlug; service?: string | undefined }) {
   const parent = SERVICE_SILOS[section];
   const child = service ? getService(section, service) : undefined;
   return (
