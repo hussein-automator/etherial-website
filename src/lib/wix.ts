@@ -102,11 +102,12 @@ export async function fetchServices(): Promise<WixService[]> {
 }
 
 // Opens Wix's hosted booking flow (service list, calendar, checkout).
-export async function startBooking() {
+export async function startBooking(serviceId?: string) {
   const c = await wix();
+  if (!serviceId) throw new Error("No booking services yet");
   const origin = window.location.origin;
   const { redirectSession } = await (c.redirects as any).createRedirectSession({
-    bookingsBook: {},
+    bookingsBook: { serviceId },
     callbacks: { postFlowUrl: `${origin}/booking-complete`, thankYouPageUrl: `${origin}/booking-complete` },
   });
   if (redirectSession?.fullUrl) window.location.href = redirectSession.fullUrl;
