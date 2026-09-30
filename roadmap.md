@@ -1,5 +1,7 @@
 # Roadmap — Etherial Interiors site
 
+- [x] Restructure portfolio around five service silos and thirteen service pages; keep photo placeholders
+- [x] Set five service groups as main navigation, add parent breadcrumbs and keep old category links working
 - [ ] Global styles: Etherial palette tokens, Bodoni/Montserrat fonts
 - [ ] Root layout: nav (≤5 links), footer with newsletter capture, Toaster
 - [ ] Home page: hero + trust banner, why, work preview, process, stat band, testimonials, CTA
