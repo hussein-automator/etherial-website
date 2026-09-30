@@ -17,7 +17,7 @@ export function BookConsultation() {
   async function book() {
     setGoing(true);
     try {
-      await startBooking();
+      await startBooking(services[0]?.id);
     } catch {
       toast.error("Online booking isn't available right now — please use the form or call us.");
       setGoing(false);
