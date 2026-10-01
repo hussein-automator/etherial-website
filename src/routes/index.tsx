@@ -8,6 +8,7 @@ import {
   Stars,
   ArrowLink,
   CONTACT,
+  SOCIAL_LINKS,
 } from "@/components/etherial";
 
 export const Route = createFileRoute("/")({
@@ -19,6 +20,7 @@ export const Route = createFileRoute("/")({
       description: "Bespoke fitted closets, kitchens and living spaces, designed and built in Dubai.",
       telephone: CONTACT.phone,
       email: CONTACT.email,
+      sameAs: Object.values(SOCIAL_LINKS),
       address: { "@type": "PostalAddress", addressLocality: "Umm Ramool", addressRegion: "Dubai", addressCountry: "AE" },
       areaServed: { "@type": "Place", name: "Dubai, UAE" },
     }) }],

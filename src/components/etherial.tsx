@@ -16,10 +16,15 @@ export const CONTACT = {
   googleReviewUrl: "#google-review-url-placeholder",
 };
 
+export const SOCIAL_LINKS = {
+  instagram: "https://www.instagram.com/etherial_ae/",
+  facebook: "https://web.facebook.com/profile.php?id=61572189234724",
+  tiktok: "https://www.tiktok.com/@etherial_closets",
+};
 const SOCIALS = [
-  { name: "Instagram", Icon: Instagram, url: "" },
-  { name: "Facebook", Icon: Facebook, url: "" },
-  { name: "TikTok", Icon: Music2, url: "" },
+  { name: "Instagram", Icon: Instagram, url: SOCIAL_LINKS.instagram },
+  { name: "Facebook", Icon: Facebook, url: SOCIAL_LINKS.facebook },
+  { name: "TikTok", Icon: Music2, url: SOCIAL_LINKS.tiktok },
 ];
 
 export function Wordmark({ className = "" }: { className?: string }) {
@@ -189,7 +194,7 @@ export function SiteFooter() {
             <p className="mt-3"><a href={`tel:${CONTACT.phone.replace(/\s/g, "")}`} className="u-reveal">{CONTACT.phone}</a></p>
             <p><a href={`mailto:${CONTACT.email}`} className="u-reveal">{CONTACT.email}</a></p>
             <div className="mt-5 flex items-center gap-3" aria-label="Social media profiles">
-              {SOCIALS.map(({ name, Icon, url }) => url ? <a key={name} href={url} target="_blank" rel="noopener noreferrer" aria-label={name} className="flex h-10 w-10 items-center justify-center rounded-full border border-linen/40 text-linen transition-colors hover:border-brass focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass"><Icon size={18} /></a> : <span key={name} title={`${name} profile link coming soon`} aria-label={`${name} profile link coming soon`} className="flex h-10 w-10 items-center justify-center rounded-full border border-linen/30 text-linen/60"><Icon size={18} /></span>)}
+              {SOCIALS.map(({ name, Icon, url }) => <a key={name} href={url} target="_blank" rel="noopener noreferrer" aria-label={name} className="flex h-10 w-10 items-center justify-center rounded-full border border-linen/40 text-linen transition-colors hover:border-brass focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass"><Icon size={18} /></a>)}
             </div>
           </div>
         </div>
