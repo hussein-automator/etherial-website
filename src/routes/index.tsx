@@ -12,6 +12,16 @@ import {
 
 export const Route = createFileRoute("/")({
   head: () => ({
+    scripts: [{ type: "application/ld+json", children: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "HomeAndConstructionBusiness",
+      name: "Etherial Interiors",
+      description: "Bespoke fitted closets, kitchens and living spaces, designed and built in Dubai.",
+      telephone: CONTACT.phone,
+      email: CONTACT.email,
+      address: { "@type": "PostalAddress", addressLocality: "Umm Ramool", addressRegion: "Dubai", addressCountry: "AE" },
+      areaServed: { "@type": "Place", name: "Dubai, UAE" },
+    }) }],
     meta: [
       { title: "Etherial Interiors — Bespoke Fitted Closets & Kitchens, Dubai" },
       {

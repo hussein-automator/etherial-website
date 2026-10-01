@@ -9,7 +9,11 @@ export const Route = createFileRoute("/$section/$service")({
     const title = `${service?.title ?? "Service unavailable"} — Etherial Interiors`;
     const description = service?.intro ?? "Explore bespoke fitted joinery in Dubai.";
     const url = `/${params.section}/${params.service}`;
-    return { meta: [
+    return { scripts: service ? [{ type: "application/ld+json", children: JSON.stringify({
+      "@context": "https://schema.org", "@type": "Service", name: service.name,
+      description: service.intro, provider: { "@type": "HomeAndConstructionBusiness", name: "Etherial Interiors" },
+      areaServed: { "@type": "Place", name: "Dubai, UAE" },
+    }) }] : [], meta: [
       { title }, { name: "description", content: description },
       { property: "og:title", content: title }, { property: "og:description", content: description },
       { property: "og:type", content: "website" }, { property: "og:url", content: url },

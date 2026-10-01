@@ -12,3 +12,5 @@
 - Keep client photography placeholders distinct from generated hero concept images; the hero slideshow explicitly labels renderings so conceptual work cannot be mistaken for completed projects.
 - Keep the five service silos in shared data, with parent/detail dynamic routes and permanent redirects from old portfolio categories; this preserves existing URLs while keeping each service hierarchy consistent.
 - Wix Headless (visitor OAuth, public client ID in src/lib/wix-config.ts) powers forms, CMS content and bookings from the browser only; keeps the site static with no secret in code.
+- Keep navigation capped at five top-level paths and nest the five existing service silos beneath Portfolio; this preserves focused navigation without merging their individual pages.
+- Generate sitemap entries from the shared service silo data only after a real public domain is available; XML sitemap locations must be absolute and must not use preview hosts.

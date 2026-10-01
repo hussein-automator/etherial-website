@@ -6,6 +6,7 @@ import { CONTACT } from "@/components/etherial";
 import { BookConsultation } from "@/components/book-consultation";
 import { submitWixForm } from "@/lib/wix";
 import { WIX_QUOTE_FORM_ID } from "@/lib/wix-config";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -38,6 +39,7 @@ type FormData = {
   name: string;
   email: string;
   phone: string;
+  contactPreference: string;
 };
 
 const initial: FormData = {
@@ -47,6 +49,7 @@ const initial: FormData = {
   name: "",
   email: "",
   phone: "",
+  contactPreference: "",
 };
 
 function ContactPage() {
@@ -73,7 +76,7 @@ function ContactPage() {
     if (step === 0) return data.projectType !== "";
     if (step === 1) return data.budget !== "";
     if (step === 2)
-      return data.name.trim() !== "" && data.email.includes("@") && data.phone.trim() !== "";
+      return data.name.trim() !== "" && data.email.includes("@") && data.phone.trim() !== "" && ["Email", "Call", "WhatsApp"].includes(data.contactPreference);
     return true;
   }
 
@@ -102,6 +105,7 @@ function ContactPage() {
         first_name: data.name,
         email: data.email,
         phone: data.phone,
+        contact_preference: data.contactPreference,
         project_type: data.projectType,
         budget: data.budget,
         project_details: data.details,
@@ -129,7 +133,7 @@ function ContactPage() {
           Tell us about your space.
         </h1>
         <p className="mt-4 max-w-lg text-[15px] leading-relaxed text-muted-foreground">
-          Two minutes of questions, and we'll reply with a tailored estimate by email — usually
+          Two minutes of questions, and we'll reply using your preferred contact method — usually
           within 2 hours during working hours.
         </p>
 
@@ -140,7 +144,7 @@ function ContactPage() {
             </span>
             <h2 className="font-display mt-5 text-3xl text-ink">Thank you, {data.name}.</h2>
             <p className="mx-auto mt-3 max-w-md text-[15px] text-muted-foreground">
-              Your project details are in. Watch your inbox — a tailored estimate is on its way,
+              Your project details are in. We'll reach you by {data.contactPreference.toLowerCase()} with a tailored estimate,
               usually within 2 hours during working hours.
             </p>
           </div>
@@ -174,7 +178,7 @@ function ContactPage() {
                 <legend className="font-display text-2xl text-ink">What are we building?</legend>
                 <div className="mt-5 flex flex-wrap gap-3">
                   {PROJECT_TYPES.map((t) => (
-                    <button
+                    <Button
                       key={t}
                       type="button"
                       onClick={() => update({ projectType: t })}
@@ -185,7 +189,7 @@ function ContactPage() {
                       }`}
                     >
                       {t}
-                    </button>
+                    </Button>
                   ))}
                 </div>
                 <textarea
@@ -205,7 +209,7 @@ function ContactPage() {
                 </legend>
                 <div className="mt-5 flex flex-wrap gap-3">
                   {BUDGETS.map((b) => (
-                    <button
+                    <Button
                       key={b}
                       type="button"
                       onClick={() => update({ budget: b })}
@@ -216,7 +220,7 @@ function ContactPage() {
                       }`}
                     >
                       {b}
-                    </button>
+                    </Button>
                   ))}
                 </div>
               </fieldset>
@@ -224,7 +228,7 @@ function ContactPage() {
 
             {step === 2 && (
               <fieldset>
-                <legend className="font-display text-2xl text-ink">Where do we send the estimate?</legend>
+                 <legend className="font-display text-2xl text-ink">How can we reach you?</legend>
                 <div className="mt-5 grid gap-4 sm:grid-cols-2">
                   <input
                     value={data.name}
@@ -248,40 +252,51 @@ function ContactPage() {
                     aria-label="Phone number"
                     value={data.phone}
                     onChange={(e) => update({ phone: e.target.value })}
-                    placeholder="Phone (WhatsApp preferred)"
+                     placeholder="Phone number (include country code)"
                     required
                     className={`${inputCls} sm:col-span-2`}
                   />
                 </div>
+                 <div className="mt-6">
+                   <p id="contact-method-label" className="text-sm font-medium text-ink">How would you prefer to be contacted?</p>
+                   <div role="radiogroup" aria-labelledby="contact-method-label" className="mt-3 flex flex-wrap gap-3">
+                     {["Email", "Call", "WhatsApp"].map((method) => (
+                       <label key={method} className={`cursor-pointer rounded-md border px-5 py-3 text-sm ${data.contactPreference === method ? "border-ink bg-ink text-linen-alt" : "border-rule bg-linen-alt text-ink"}`}>
+                         <input type="radio" name="contactPreference" value={method} checked={data.contactPreference === method} onChange={() => update({ contactPreference: method })} className="sr-only" required />
+                         {method}
+                       </label>
+                     ))}
+                   </div>
+                 </div>
               </fieldset>
             )}
 
             <div className="mt-8 flex items-center gap-4">
               {step > 0 && (
-                <button
+                 <Button variant="ghost"
                   type="button"
                   onClick={() => setStep((s) => s - 1)}
                   className="inline-flex items-center gap-2 text-[13px] font-medium uppercase tracking-[0.12em] text-muted-foreground hover:text-ink"
                 >
                   <ArrowLeft className="h-4 w-4" /> Back
-                </button>
+                 </Button>
               )}
               {step < 2 ? (
-                <button
+                 <Button
                   type="button"
                   onClick={() => (canNext() ? setStep((s) => s + 1) : toast.error("Please choose an option first."))}
                   className="btn-liquid inline-flex items-center gap-2 rounded-md bg-primary px-7 py-3.5 text-[13px] font-medium uppercase tracking-[0.12em] text-primary-foreground"
                 >
                   Continue <ArrowRight className="h-4 w-4" />
-                </button>
+                 </Button>
               ) : (
-                <button
+                 <Button
                   type="submit"
                   disabled={sending}
                   className="btn-liquid inline-flex items-center gap-2 rounded-md bg-primary px-7 py-3.5 text-[13px] font-medium uppercase tracking-[0.12em] text-primary-foreground disabled:opacity-60"
                 >
                   {sending ? "Sending…" : "Send my request"} <ArrowRight className="h-4 w-4" />
-                </button>
+                 </Button>
               )}
             </div>
           </form>
@@ -296,7 +311,7 @@ function ContactPage() {
           <ol className="mt-6 space-y-6">
             {[
               { n: "1", t: "Intake received", d: "Your details land with our design team immediately." },
-              { n: "2", t: "Estimate within 2 hours", d: "A tailored price scope arrives by email the same day." },
+               { n: "2", t: "Estimate within 2 hours", d: "A tailored price scope follows by your preferred contact method." },
               { n: "3", t: "Project launch", d: "We visit, measure, and your build begins — typically fitted within 14 days." },
             ].map((s) => (
               <li key={s.n} className="flex gap-4">
