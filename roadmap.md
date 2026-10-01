@@ -14,8 +14,9 @@
 - [ ] Footer portfolio/company/legal links and matching Pantry, FAQ, privacy, and terms pages
 - [x] Wix Headless: quote/newsletter forms, Projects/JournalPosts CMS, Bookings redirect
 - [ ] Wix form IDs + CMS collections + OAuth allowed URLs (blocked: client setup in Wix)
-- [ ] Restore five-link navigation with Portfolio dropdown for five separate service collections
-- [ ] Capture preferred contact method alongside required email and phone
-- [ ] Rework footer with ring social icons, contact beneath newsletter, and fading oversized wordmark
-- [ ] Add relevant structured data; prepare a sitemap that updates with service pages (public site URL needed)
-- [ ] Connect Instagram, Facebook and TikTok profiles (profile URLs needed)
+- [x] Restore five-link navigation with Portfolio dropdown for five separate service collections
+- [x] Capture preferred contact method alongside required email and phone
+- [x] Rework footer with ring social icons, contact beneath newsletter, and fading oversized wordmark
+- [x] Add relevant structured data to home and service pages
+- [ ] Create sitemap.xml that updates with service pages (awaiting public site URL; user chose to skip this for now)
+- [x] Connect Instagram, Facebook and TikTok profiles
