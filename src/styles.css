@@ -158,6 +158,10 @@
 .frame-fold-large:hover {
   border-radius: 6px 120px 6px 120px;
 }
+.footer-wordmark {
+  mask-image: linear-gradient(to bottom, #000 8%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 8%, transparent 100%);
+}
 @media (prefers-reduced-motion: reduce) {
   .frame-fold, .frame-fold img { transition-duration: 0.01ms; }
   .fade-in-slow { animation: none; }
