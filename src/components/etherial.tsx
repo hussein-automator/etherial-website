@@ -1,7 +1,8 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useState, type FormEvent, type ReactNode } from "react";
-import { Menu, X, Star, ArrowRight } from "lucide-react";
+import { Menu, X, Star, ArrowRight, ChevronDown, Instagram, Facebook, Music2 } from "lucide-react";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 import { submitWixForm } from "@/lib/wix";
 import { WIX_NEWSLETTER_FORM_ID } from "@/lib/wix-config";
 import { SERVICE_SILOS, SILO_KEYS } from "@/lib/service-silos";
@@ -15,7 +16,11 @@ export const CONTACT = {
   googleReviewUrl: "#google-review-url-placeholder",
 };
 
-const NAV = SILO_KEYS.map((section) => ({ section, label: SERVICE_SILOS[section].name }));
+const SOCIALS = [
+  { name: "Instagram", Icon: Instagram, url: "" },
+  { name: "Facebook", Icon: Facebook, url: "" },
+  { name: "TikTok", Icon: Music2, url: "" },
+];
 
 export function Wordmark({ className = "" }: { className?: string }) {
   return (
@@ -27,6 +32,7 @@ export function Wordmark({ className = "" }: { className?: string }) {
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const [portfolioOpen, setPortfolioOpen] = useState(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   return (
@@ -35,18 +41,21 @@ export function SiteHeader() {
         <Link to="/" aria-label="Etherial Interiors home">
           <Wordmark />
         </Link>
-        <nav className="hidden flex-wrap items-center justify-center gap-x-5 gap-y-2 py-3 lg:flex" aria-label="Primary">
-          {NAV.map((item) => (
-            <Link
-              key={item.section}
-              to="/$section"
-              params={{ section: item.section }}
-              data-active={pathname.startsWith(`/${item.section}`)}
-              className="u-reveal text-[11px] font-medium uppercase tracking-[0.08em] text-ink"
-            >
-              {item.label}
-            </Link>
-          ))}
+        <nav className="hidden items-center gap-6 py-3 lg:flex" aria-label="Primary">
+          <Link to="/" data-active={pathname === "/"} className="u-reveal text-xs font-medium uppercase text-ink">Home</Link>
+          <div className="group relative flex items-center" onKeyDown={(e) => { if (e.key === "Escape") (e.currentTarget.querySelector("a") as HTMLElement | null)?.focus(); }}>
+            <Link to="/portfolio" data-active={pathname === "/portfolio" || SILO_KEYS.some((slug) => pathname.startsWith(`/${slug}`))} aria-haspopup="true" className="u-reveal text-xs font-medium uppercase text-ink">Portfolio</Link>
+            <ChevronDown className="ml-1 h-3.5 w-3.5 text-ink" aria-hidden="true" />
+            <div className="invisible absolute left-0 top-full z-50 w-72 translate-y-1 pt-4 opacity-0 transition-opacity group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
+              <div className="border border-rule bg-linen-alt p-2 shadow-lg">
+                {SILO_KEYS.map((slug) => <Link key={slug} to="/$section" params={{ section: slug }} className="block px-4 py-3 text-xs font-medium uppercase text-ink focus:bg-linen hover:bg-linen">{SERVICE_SILOS[slug].name}</Link>)}
+                <div className="border-t border-rule"><Link to="/portfolio" className="block px-4 py-3 text-xs font-medium uppercase text-ink focus:bg-linen hover:bg-linen">All projects</Link></div>
+              </div>
+            </div>
+          </div>
+          <Link to="/about" data-active={pathname === "/about"} className="u-reveal text-xs font-medium uppercase text-ink">About</Link>
+          <Link to="/blog" data-active={pathname === "/blog"} className="u-reveal text-xs font-medium uppercase text-ink">Blog</Link>
+          <Link to="/contact" data-active={pathname === "/contact"} className="u-reveal text-xs font-medium uppercase text-ink">Contact</Link>
         </nav>
         <div className="hidden lg:block">
           <Link
@@ -56,29 +65,29 @@ export function SiteHeader() {
             Get a quote
           </Link>
         </div>
-        <button
-          className="lg:hidden"
+        <Button
+          variant="ghost" size="icon" className="lg:hidden"
           onClick={() => setOpen((v) => !v)}
           aria-label={open ? "Close menu" : "Open menu"}
+          aria-expanded={open}
         >
           {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </button>
+        </Button>
       </div>
       {open && (
         <nav className="border-t border-rule bg-linen-alt px-5 py-4 lg:hidden" aria-label="Mobile">
           <ul className="flex flex-col gap-4">
-            {NAV.map((item) => (
-              <li key={item.section}>
-                <Link
-                  to="/$section"
-                  params={{ section: item.section }}
-                  onClick={() => setOpen(false)}
-                  className="text-sm font-medium uppercase tracking-[0.14em] text-ink"
-                >
-                  {item.label}
-                </Link>
-              </li>
-            ))}
+            <li><Link to="/" onClick={() => setOpen(false)} className="text-sm font-medium uppercase text-ink">Home</Link></li>
+            <li>
+              <div className="flex items-center justify-between">
+                <Link to="/portfolio" onClick={() => setOpen(false)} className="text-sm font-medium uppercase text-ink">Portfolio</Link>
+                <Button variant="ghost" size="icon" aria-label="Show portfolio collections" aria-expanded={portfolioOpen} onClick={() => setPortfolioOpen((value) => !value)}><ChevronDown className={`h-4 w-4 transition-transform ${portfolioOpen ? "rotate-180" : ""}`} /></Button>
+              </div>
+              {portfolioOpen && <ul className="mt-3 space-y-3 border-l border-rule pl-4">{SILO_KEYS.map((slug) => <li key={slug}><Link to="/$section" params={{ section: slug }} onClick={() => setOpen(false)} className="text-sm text-ink">{SERVICE_SILOS[slug].name}</Link></li>)}</ul>}
+            </li>
+            <li><Link to="/about" onClick={() => setOpen(false)} className="text-sm font-medium uppercase text-ink">About</Link></li>
+            <li><Link to="/blog" onClick={() => setOpen(false)} className="text-sm font-medium uppercase text-ink">Blog</Link></li>
+            <li><Link to="/contact" onClick={() => setOpen(false)} className="text-sm font-medium uppercase text-ink">Contact</Link></li>
             <li>
               <Link
                 to="/contact"
@@ -124,18 +133,12 @@ export function SiteFooter() {
 
   return (
     <footer className="bg-ink-deep text-linen">
-      <div className="mx-auto grid max-w-6xl gap-10 px-5 py-16 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1.3fr]">
+      <div className="mx-auto grid max-w-6xl gap-10 px-5 py-16 sm:grid-cols-2 lg:grid-cols-[1.15fr_1fr_1fr_1.4fr]">
         <div>
           <Wordmark className="text-linen" />
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-linen/70">
             Bespoke fitted closets, kitchens and living spaces — designed and built in Dubai.
           </p>
-          <div className="mt-5 text-sm leading-relaxed text-linen/70">
-            <p>{CONTACT.address}</p>
-            <p className="mt-1">{CONTACT.hours}</p>
-            <p className="mt-3"><a href={`tel:${CONTACT.phone.replace(/\s/g, "")}`} className="u-reveal">{CONTACT.phone}</a></p>
-            <p><a href={`mailto:${CONTACT.email}`} className="u-reveal">{CONTACT.email}</a></p>
-          </div>
         </div>
         <nav aria-label="Footer portfolio" className="text-sm leading-relaxed text-linen/70">
           <p className="mb-3 text-[13px] font-medium uppercase tracking-[0.14em] text-linen">
@@ -180,8 +183,18 @@ export function SiteFooter() {
               Join
             </button>
           </form>
+          <div className="mt-7 border-t border-linen/20 pt-6 text-sm leading-relaxed text-linen/70">
+            <p>{CONTACT.address}</p>
+            <p className="mt-1">{CONTACT.hours}</p>
+            <p className="mt-3"><a href={`tel:${CONTACT.phone.replace(/\s/g, "")}`} className="u-reveal">{CONTACT.phone}</a></p>
+            <p><a href={`mailto:${CONTACT.email}`} className="u-reveal">{CONTACT.email}</a></p>
+            <div className="mt-5 flex items-center gap-3" aria-label="Social media profiles">
+              {SOCIALS.map(({ name, Icon, url }) => url ? <a key={name} href={url} target="_blank" rel="noopener noreferrer" aria-label={name} className="flex h-10 w-10 items-center justify-center rounded-full border border-linen/40 text-linen transition-colors hover:border-brass focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass"><Icon size={18} /></a> : <span key={name} title={`${name} profile link coming soon`} aria-label={`${name} profile link coming soon`} className="flex h-10 w-10 items-center justify-center rounded-full border border-linen/30 text-linen/60"><Icon size={18} /></span>)}
+            </div>
+          </div>
         </div>
       </div>
+      <div className="mx-auto max-w-6xl overflow-hidden px-5" aria-hidden="true"><div className="footer-wordmark font-display select-none whitespace-nowrap text-center text-7xl leading-none text-linen/25 sm:text-[8rem] lg:text-[12rem]">ETHERIAL.</div></div>
       <div className="border-t border-linen/10 px-5 py-5 text-xs text-linen/50">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4">
           <span>© {new Date().getFullYear()} Etherial Interiors, Dubai. All rights reserved.</span>
