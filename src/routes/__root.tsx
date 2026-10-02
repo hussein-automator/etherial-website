@@ -7,12 +7,13 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { Toaster } from "@/components/ui/sonner";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SiteHeader, SiteFooter } from "@/components/etherial";
+import { localizePage } from "@/lib/arabic";
 
 function NotFoundComponent() {
   return (
@@ -125,12 +126,66 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const [language, setLanguage] = useState<"en" | "ar">("en");
+  const [dark, setDark] = useState(false);
+
+  useEffect(() => {
+    setLanguage(localStorage.getItem("etherialLanguage") === "ar" ? "ar" : "en");
+    const stored = localStorage.getItem("etherialTheme");
+    setDark(stored ? stored === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches);
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", dark);
+    localStorage.setItem("etherialTheme", dark ? "dark" : "light");
+  }, [dark]);
+
+  useEffect(() => {
+    document.documentElement.lang = language;
+    document.documentElement.dir = language === "ar" ? "rtl" : "ltr";
+    localStorage.setItem("etherialLanguage", language);
+    const root = document.getElementById("etherial-site");
+    if (!root) return;
+    let queued = false;
+    const refresh = () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(() => { queued = false; localizePage(root, language); });
+    };
+    refresh();
+    const observer = new MutationObserver(refresh);
+    observer.observe(root, { childList: true, subtree: true, characterData: true });
+    return () => observer.disconnect();
+  }, [language]);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const root = document.getElementById("etherial-content");
+    if (!root) return;
+    const observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        const element = entry.target;
+        element.classList.toggle("section-in-view", entry.isIntersecting);
+        element.classList.toggle("section-out-of-view", !entry.isIntersecting);
+      }
+    }, { threshold: 0.08, rootMargin: "0px 0px -4% 0px" });
+    const tracked = new WeakSet<Element>();
+    const attach = () => {
+      root.querySelectorAll("section").forEach((element) => {
+        if (!tracked.has(element)) { tracked.add(element); observer.observe(element); }
+      });
+    };
+    attach();
+    const additions = new MutationObserver(attach);
+    additions.observe(root, { childList: true, subtree: true });
+    return () => { observer.disconnect(); additions.disconnect(); };
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="flex min-h-screen flex-col">
-        <SiteHeader />
-        <main className="flex-1">
+      <div id="etherial-site" className="flex min-h-screen flex-col">
+        <SiteHeader language={language} onLanguageChange={setLanguage} dark={dark} onDarkChange={setDark} />
+        <main id="etherial-content" className="flex-1">
           <Outlet />
         </main>
         <SiteFooter />
