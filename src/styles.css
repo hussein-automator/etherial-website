@@ -88,26 +88,26 @@
   }
 }
 
-/* Signature interaction 1: underline reveal (links) */
+/* Signature interaction 1: a small brass inlay that opens at the link's edge. */
 .u-reveal {
   position: relative;
+  transition: color 0.25s ease;
 }
 .u-reveal::after {
   content: "";
   position: absolute;
-  left: 0;
-  bottom: -3px;
-  height: 1px;
-  width: 100%;
-  background: currentColor;
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  inset-inline-start: -9px;
+  top: 50%;
+  width: 3px;
+  height: 3px;
+  background: var(--brass);
+  transform: translateY(-50%) rotate(45deg) scale(0);
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .u-reveal:hover::after,
+.u-reveal:focus-visible::after,
 .u-reveal[data-active="true"]::after {
-  transform: scaleX(1);
-  transform-origin: left;
+  transform: translateY(-50%) rotate(45deg) scale(1.8);
 }
 
 /* Signature interaction 2: liquid brass fill (primary buttons) */
