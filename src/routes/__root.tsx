@@ -128,19 +128,23 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const [language, setLanguage] = useState<"en" | "ar">("en");
   const [dark, setDark] = useState(false);
+  const [preferencesReady, setPreferencesReady] = useState(false);
 
   useEffect(() => {
     setLanguage(localStorage.getItem("etherialLanguage") === "ar" ? "ar" : "en");
     const stored = localStorage.getItem("etherialTheme");
     setDark(stored ? stored === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches);
+    setPreferencesReady(true);
   }, []);
 
   useEffect(() => {
+    if (!preferencesReady) return;
     document.documentElement.classList.toggle("dark", dark);
     localStorage.setItem("etherialTheme", dark ? "dark" : "light");
-  }, [dark]);
+  }, [dark, preferencesReady]);
 
   useEffect(() => {
+    if (!preferencesReady) return;
     document.documentElement.lang = language;
     document.documentElement.dir = language === "ar" ? "rtl" : "ltr";
     localStorage.setItem("etherialLanguage", language);
@@ -156,7 +160,7 @@ function RootComponent() {
     const observer = new MutationObserver(refresh);
     observer.observe(root, { childList: true, subtree: true, characterData: true });
     return () => observer.disconnect();
-  }, [language]);
+  }, [language, preferencesReady]);
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
