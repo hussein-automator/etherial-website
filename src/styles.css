@@ -71,6 +71,29 @@
   --ring: var(--brass);
 }
 
+.dark {
+  --ink: #e9e7e1;
+  --ink-deep: #101722;
+  --linen: #202b39;
+  --linen-alt: #17212e;
+  --rule: #384554;
+  --background: var(--linen-alt);
+  --foreground: var(--ink);
+  --card: #202b39;
+  --card-foreground: var(--ink);
+  --popover: #202b39;
+  --popover-foreground: var(--ink);
+  --primary: var(--ink);
+  --primary-foreground: var(--linen-alt);
+  --secondary: var(--linen);
+  --secondary-foreground: var(--ink);
+  --muted: var(--linen);
+  --muted-foreground: #b9c3cf;
+  --accent-foreground: var(--ink-deep);
+  --border: var(--rule);
+  --input: var(--rule);
+}
+
 @layer base {
   * {
     border-color: var(--color-border);
@@ -88,26 +111,26 @@
   }
 }
 
-/* Signature interaction 1: underline reveal (links) */
+/* Signature interaction 1: a small brass inlay that opens at the link's edge. */
 .u-reveal {
   position: relative;
+  transition: color 0.25s ease;
 }
 .u-reveal::after {
   content: "";
   position: absolute;
-  left: 0;
-  bottom: -3px;
-  height: 1px;
-  width: 100%;
-  background: currentColor;
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  inset-inline-start: -9px;
+  top: 50%;
+  width: 3px;
+  height: 3px;
+  background: var(--brass);
+  transform: translateY(-50%) rotate(45deg) scale(0);
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .u-reveal:hover::after,
+.u-reveal:focus-visible::after,
 .u-reveal[data-active="true"]::after {
-  transform: scaleX(1);
-  transform-origin: left;
+  transform: translateY(-50%) rotate(45deg) scale(1.8);
 }
 
 /* Signature interaction 2: liquid brass fill (primary buttons) */
@@ -162,7 +185,19 @@
   mask-image: linear-gradient(to bottom, #000 8%, transparent 100%);
   -webkit-mask-image: linear-gradient(to bottom, #000 8%, transparent 100%);
 }
+/* Sections remain visible without JavaScript. Only opt in after observation. */
+@media (prefers-reduced-motion: no-preference) {
+  .section-out-of-view { opacity: 0.62; transform: translateY(18px); }
+  .section-in-view { opacity: 1; transform: translateY(0); }
+  #etherial-content section { transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1); }
+}
+[dir="rtl"] body { font-family: "Noto Naskh Arabic", "Montserrat", sans-serif; }
+[dir="rtl"] .font-display { font-family: "Noto Naskh Arabic", "Bodoni Moda", serif; }
+[dir="rtl"] .u-reveal::after { inset-inline-start: -9px; }
+.dark footer { --linen: #e9e7e1; --ink-deep: #101722; }
+.dark .btn-liquid:hover { color: #101722; }
 @media (prefers-reduced-motion: reduce) {
   .frame-fold, .frame-fold img { transition-duration: 0.01ms; }
   .fade-in-slow { animation: none; }
+  #etherial-content section, .u-reveal, .u-reveal::after, .btn-liquid::before { transition-duration: 0.01ms; }
 }

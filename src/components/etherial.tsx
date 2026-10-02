@@ -1,6 +1,6 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useState, type FormEvent, type ReactNode } from "react";
-import { Menu, X, Star, ArrowRight, ChevronDown, Instagram, Facebook, Music2 } from "lucide-react";
+import { Menu, X, Star, ArrowRight, ChevronDown, Instagram, Facebook, Music2, Moon, Sun, Languages } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { submitWixForm } from "@/lib/wix";
@@ -35,7 +35,7 @@ export function Wordmark({ className = "" }: { className?: string }) {
   );
 }
 
-export function SiteHeader() {
+export function SiteHeader({ language, onLanguageChange, dark, onDarkChange }: { language: "en" | "ar"; onLanguageChange: (value: "en" | "ar") => void; dark: boolean; onDarkChange: (value: boolean) => void }) {
   const [open, setOpen] = useState(false);
   const [portfolioOpen, setPortfolioOpen] = useState(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
@@ -62,6 +62,10 @@ export function SiteHeader() {
           <Link to="/blog" data-active={pathname === "/blog"} className="u-reveal text-xs font-medium uppercase text-ink">Blog</Link>
           <Link to="/contact" data-active={pathname === "/contact"} className="u-reveal text-xs font-medium uppercase text-ink">Contact</Link>
         </nav>
+        <div className="ml-auto flex shrink-0 items-center gap-1 lg:ml-0">
+          <Button variant="ghost" size="icon" type="button" onClick={() => onLanguageChange(language === "en" ? "ar" : "en")} aria-label={language === "en" ? "Switch to Arabic" : "Switch to English"} title={language === "en" ? "العربية" : "English"} className="h-10 w-10 text-ink"><Languages className="h-4 w-4" /><span className="sr-only">{language === "en" ? "العربية" : "English"}</span></Button>
+          <Button variant="ghost" size="icon" type="button" onClick={() => onDarkChange(!dark)} aria-label={dark ? "Switch to light mode" : "Switch to dark mode"} title={dark ? "Light mode" : "Dark mode"} className="h-10 w-10 text-ink">{dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}</Button>
+        </div>
         <div className="hidden lg:block">
           <Link
             to="/contact"
@@ -144,6 +148,9 @@ export function SiteFooter() {
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-linen/70">
             Bespoke fitted closets, kitchens and living spaces — designed and built in Dubai.
           </p>
+          <div className="mt-6 flex items-center gap-3" aria-label="Social media profiles">
+            {SOCIALS.map(({ name, Icon, url }) => <a key={name} href={url} target="_blank" rel="noopener noreferrer" aria-label={name} title={name} className="flex h-10 w-10 items-center justify-center rounded-full border border-linen/40 text-linen transition-colors hover:border-brass focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass"><Icon size={18} /></a>)}
+          </div>
         </div>
         <nav aria-label="Footer portfolio" className="text-sm leading-relaxed text-linen/70">
           <p className="mb-3 text-[13px] font-medium uppercase tracking-[0.14em] text-linen">
@@ -193,9 +200,6 @@ export function SiteFooter() {
             <p className="mt-1">{CONTACT.hours}</p>
             <p className="mt-3"><a href={`tel:${CONTACT.phone.replace(/\s/g, "")}`} className="u-reveal">{CONTACT.phone}</a></p>
             <p><a href={`mailto:${CONTACT.email}`} className="u-reveal">{CONTACT.email}</a></p>
-            <div className="mt-5 flex items-center gap-3" aria-label="Social media profiles">
-              {SOCIALS.map(({ name, Icon, url }) => <a key={name} href={url} target="_blank" rel="noopener noreferrer" aria-label={name} className="flex h-10 w-10 items-center justify-center rounded-full border border-linen/40 text-linen transition-colors hover:border-brass focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass"><Icon size={18} /></a>)}
-            </div>
           </div>
         </div>
       </div>

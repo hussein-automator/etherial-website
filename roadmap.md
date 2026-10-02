@@ -20,3 +20,8 @@
 - [x] Add relevant structured data to home and service pages
 - [ ] Create sitemap.xml that updates with service pages (awaiting public site URL; user chose to skip this for now)
 - [x] Connect Instagram, Facebook and TikTok profiles
+- [ ] Replace familiar underline hover with a distinctive, accessible link treatment
+- [ ] Move footer social rings beneath the Etherial name; keep contact details beneath newsletter
+- [ ] Add lightweight scroll-entry and scroll-exit motion without new imagery; honor reduced motion
+- [ ] Add English/Arabic language switching across the site with right-to-left layout
+- [ ] Add visitor-controlled dark mode with saved preference
