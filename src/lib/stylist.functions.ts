@@ -27,7 +27,7 @@ export const recommendOutfit = createServerFn({ method: "POST" })
         return res;
       },
     });
-    let failure: { status?: number; message?: string } | undefined;
+    let failure: { status: number | undefined; message: string | undefined } | undefined;
     try {
       const result = streamText({
         model: provider.responses("openai/gpt-6-astra"),
