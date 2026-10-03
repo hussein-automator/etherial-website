@@ -17,6 +17,7 @@ import { Route as BookingCompleteRouteImport } from './routes/booking-complete'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as FaqsRouteImport } from './routes/faqs'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
+import { Route as StylistRouteImport } from './routes/stylist'
 import { Route as TermsAndConditionsRouteImport } from './routes/terms-and-conditions'
 import { Route as SectionServiceRouteImport } from './routes/$section.$service'
 import { Route as PortfolioIndexRouteImport } from './routes/portfolio/index'
@@ -62,6 +63,11 @@ const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
   path: '/privacy-policy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StylistRoute = StylistRouteImport.update({
+  id: '/stylist',
+  path: '/stylist',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TermsAndConditionsRoute = TermsAndConditionsRouteImport.update({
   id: '/terms-and-conditions',
   path: '/terms-and-conditions',
@@ -92,6 +98,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/faqs': typeof FaqsRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
+  '/stylist': typeof StylistRoute
   '/terms-and-conditions': typeof TermsAndConditionsRoute
   '/$section/$service': typeof SectionServiceRoute
   '/portfolio/$category': typeof PortfolioCategoryRoute
@@ -106,6 +113,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/faqs': typeof FaqsRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
+  '/stylist': typeof StylistRoute
   '/terms-and-conditions': typeof TermsAndConditionsRoute
   '/$section/$service': typeof SectionServiceRoute
   '/portfolio/$category': typeof PortfolioCategoryRoute
@@ -121,6 +129,7 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/faqs': typeof FaqsRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
+  '/stylist': typeof StylistRoute
   '/terms-and-conditions': typeof TermsAndConditionsRoute
   '/$section/$service': typeof SectionServiceRoute
   '/portfolio/$category': typeof PortfolioCategoryRoute
@@ -137,6 +146,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/faqs'
     | '/privacy-policy'
+    | '/stylist'
     | '/terms-and-conditions'
     | '/$section/$service'
     | '/portfolio/$category'
@@ -151,6 +161,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/faqs'
     | '/privacy-policy'
+    | '/stylist'
     | '/terms-and-conditions'
     | '/$section/$service'
     | '/portfolio/$category'
@@ -165,6 +176,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/faqs'
     | '/privacy-policy'
+    | '/stylist'
     | '/terms-and-conditions'
     | '/$section/$service'
     | '/portfolio/$category'
@@ -180,6 +192,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   FaqsRoute: typeof FaqsRoute
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
+  StylistRoute: typeof StylistRoute
   TermsAndConditionsRoute: typeof TermsAndConditionsRoute
   PortfolioCategoryRoute: typeof PortfolioCategoryRoute
   PortfolioIndexRoute: typeof PortfolioIndexRoute
@@ -243,6 +256,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyPolicyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/stylist': {
+      id: '/stylist'
+      path: '/stylist'
+      fullPath: '/stylist'
+      preLoaderRoute: typeof StylistRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/terms-and-conditions': {
       id: '/terms-and-conditions'
       path: '/terms-and-conditions'
@@ -294,6 +314,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   FaqsRoute: FaqsRoute,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
+  StylistRoute: StylistRoute,
   TermsAndConditionsRoute: TermsAndConditionsRoute,
   PortfolioCategoryRoute: PortfolioCategoryRoute,
   PortfolioIndexRoute: PortfolioIndexRoute,
