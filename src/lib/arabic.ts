@@ -1,3 +1,5 @@
+import { extraCopy } from "./arabic-extra";
+
 /** Browser-only copy translations. Original text stays in React/SSR for English indexing. */
 const copy: Record<string, string> = {
   "Home": "الرئيسية", "Portfolio": "الأعمال", "About": "من نحن", "Blog": "المدونة", "Contact": "تواصل معنا", "Get a quote": "اطلب عرض سعر", "All projects": "جميع المشاريع", "All Projects": "جميع المشاريع", "Company": "الشركة", "FAQs": "الأسئلة الشائعة", "Privacy Policy": "سياسة الخصوصية", "T&Cs": "الشروط والأحكام", "Join": "انضم", "Your email": "بريدك الإلكتروني", "Occasional notes on joinery": "أخبار وأفكار عن النجارة", "Bespoke fitted closets, kitchens and living spaces — designed and built in Dubai.": "خزائن ومطابخ ومساحات معيشة مصممة ومصنّعة حسب الطلب في دبي.",
@@ -15,10 +17,10 @@ const attributes = new WeakMap<Element, Map<string, string>>();
 const translatableAttributes = ["placeholder", "aria-label", "title"];
 
 function translate(value: string): string {
-  const exact = copy[value];
+  const exact = copy[value] ?? extraCopy[value];
   if (exact) return exact;
   const photo = value.match(/^(.*?) — (?:featured project photo|project photo|photo|project photograph|workshop or team photograph|article cover image).*?(?:client to supply|to be supplied)/i);
-  if (photo) return `${copy[photo[1] ?? ""] ?? photo[1]} — الصورة ستُضاف قريباً`;
+  if (photo) return `${copy[photo[1] ?? ""] ?? extraCopy[photo[1] ?? ""] ?? photo[1]} — الصورة ستُضاف قريباً`;
   return value;
 }
 

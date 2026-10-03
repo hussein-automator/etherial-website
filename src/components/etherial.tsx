@@ -172,6 +172,7 @@ export function SiteFooter() {
             <li><Link className="u-reveal" to="/blog">Blog</Link></li>
             <li><Link className="u-reveal" to="/contact">Contact</Link></li>
             <li><Link className="u-reveal" to="/faqs">FAQs</Link></li>
+            <li><Link className="u-reveal" to="/stylist">Wardrobe stylist</Link></li>
           </ul>
         </nav>
         <div>

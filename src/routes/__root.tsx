@@ -6,6 +6,7 @@ import {
   useRouter,
   HeadContent,
   Scripts,
+  type ErrorComponentProps,
 } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
 import { Toaster } from "@/components/ui/sonner";
@@ -37,7 +38,7 @@ function NotFoundComponent() {
   );
 }
 
-function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+function ErrorComponent({ error, reset }: ErrorComponentProps) {
   console.error(error);
   const router = useRouter();
   useEffect(() => {
@@ -124,6 +125,22 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+/** Runs DOM-mutating enhancements only after React has hydrated the lazy route content (avoids hydration mismatches). */
+let hydrated = false;
+function afterHydration(run: () => void) {
+  if (hydrated) { run(); return () => {}; }
+  let timer = 0;
+  let tries = 0;
+  const check = () => {
+    const leaf = document.querySelector("#etherial-content > *");
+    const ready = leaf && Object.keys(leaf).some((key) => key.startsWith("__reactFiber"));
+    if (ready || ++tries > 100) { hydrated = true; requestAnimationFrame(run); return; }
+    timer = window.setTimeout(check, 100);
+  };
+  check();
+  return () => window.clearTimeout(timer);
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const [language, setLanguage] = useState<"en" | "ar">("en");
@@ -156,10 +173,12 @@ function RootComponent() {
       queued = true;
       requestAnimationFrame(() => { queued = false; localizePage(root, language); });
     };
-    refresh();
     const observer = new MutationObserver(refresh);
-    observer.observe(root, { childList: true, subtree: true, characterData: true });
-    return () => observer.disconnect();
+    const cancel = afterHydration(() => {
+      refresh();
+      observer.observe(root, { childList: true, subtree: true, characterData: true });
+    });
+    return () => { cancel(); observer.disconnect(); };
   }, [language, preferencesReady]);
 
   useEffect(() => {
@@ -179,10 +198,12 @@ function RootComponent() {
         if (!tracked.has(element)) { tracked.add(element); observer.observe(element); }
       });
     };
-    attach();
     const additions = new MutationObserver(attach);
-    additions.observe(root, { childList: true, subtree: true });
-    return () => { observer.disconnect(); additions.disconnect(); };
+    const cancel = afterHydration(() => {
+      attach();
+      additions.observe(root, { childList: true, subtree: true });
+    });
+    return () => { cancel(); observer.disconnect(); additions.disconnect(); };
   }, []);
 
   return (
