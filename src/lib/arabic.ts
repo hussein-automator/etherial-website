@@ -20,7 +20,7 @@ function translate(value: string): string {
   const exact = copy[value] ?? extraCopy[value];
   if (exact) return exact;
   const photo = value.match(/^(.*?) — (?:featured project photo|project photo|photo|project photograph|workshop or team photograph|article cover image).*?(?:client to supply|to be supplied)/i);
-  if (photo) return `${copy[photo[1] ?? ""] ?? photo[1]} — الصورة ستُضاف قريباً`;
+  if (photo) return `${copy[photo[1] ?? ""] ?? extraCopy[photo[1] ?? ""] ?? photo[1]} — الصورة ستُضاف قريباً`;
   return value;
 }
 

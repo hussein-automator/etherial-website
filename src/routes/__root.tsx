@@ -124,6 +124,16 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+/** Runs DOM-mutating enhancements only once React has finished hydrating lazy route content. */
+let hydrated = false;
+function afterHydration(run: () => void) {
+  if (hydrated) { run(); return () => {}; }
+  let timer = 0;
+  const go = () => { timer = window.setTimeout(() => { hydrated = true; run(); }, 400); };
+  if (document.readyState === "complete") go(); else window.addEventListener("load", go, { once: true });
+  return () => { window.removeEventListener("load", go); window.clearTimeout(timer); };
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const [language, setLanguage] = useState<"en" | "ar">("en");
@@ -156,10 +166,12 @@ function RootComponent() {
       queued = true;
       requestAnimationFrame(() => { queued = false; localizePage(root, language); });
     };
-    refresh();
     const observer = new MutationObserver(refresh);
-    observer.observe(root, { childList: true, subtree: true, characterData: true });
-    return () => observer.disconnect();
+    const cancel = afterHydration(() => {
+      refresh();
+      observer.observe(root, { childList: true, subtree: true, characterData: true });
+    });
+    return () => { cancel(); observer.disconnect(); };
   }, [language, preferencesReady]);
 
   useEffect(() => {
@@ -179,10 +191,12 @@ function RootComponent() {
         if (!tracked.has(element)) { tracked.add(element); observer.observe(element); }
       });
     };
-    attach();
     const additions = new MutationObserver(attach);
-    additions.observe(root, { childList: true, subtree: true });
-    return () => { observer.disconnect(); additions.disconnect(); };
+    const cancel = afterHydration(() => {
+      attach();
+      additions.observe(root, { childList: true, subtree: true });
+    });
+    return () => { cancel(); observer.disconnect(); additions.disconnect(); };
   }, []);
 
   return (
