@@ -124,14 +124,20 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
-/** Runs DOM-mutating enhancements only once React has finished hydrating lazy route content. */
+/** Runs DOM-mutating enhancements only after React has hydrated the lazy route content (avoids hydration mismatches). */
 let hydrated = false;
 function afterHydration(run: () => void) {
   if (hydrated) { run(); return () => {}; }
   let timer = 0;
-  const go = () => { timer = window.setTimeout(() => { hydrated = true; run(); }, 400); };
-  if (document.readyState === "complete") go(); else window.addEventListener("load", go, { once: true });
-  return () => { window.removeEventListener("load", go); window.clearTimeout(timer); };
+  let tries = 0;
+  const check = () => {
+    const leaf = document.querySelector("#etherial-content > *");
+    const ready = leaf && Object.keys(leaf).some((key) => key.startsWith("__reactFiber"));
+    if (ready || ++tries > 100) { hydrated = true; requestAnimationFrame(run); return; }
+    timer = window.setTimeout(check, 100);
+  };
+  check();
+  return () => window.clearTimeout(timer);
 }
 
 function RootComponent() {
